@@ -1,0 +1,2 @@
+# coding: utf-8
+from .schema import validate_schema
