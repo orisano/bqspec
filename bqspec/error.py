@@ -1,14 +1,9 @@
 # coding: utf-8
 from __future__ import unicode_literals
-from typing import List, Optional, Text
 
-ResourcePath = List[Text]
-ResourceKey = "$key"
-ResourceVal = "$val"
+from typing import Optional, Text
 
-
-def resource_index(i):  # type: (int) -> Text
-    return "#{}".format(i)
+from .rcpath import ResourcePath
 
 
 class SpecError(object):

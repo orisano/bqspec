@@ -2,12 +2,13 @@
 from __future__ import unicode_literals
 
 import types
-from typing import Any, List, Optional, Text
+from typing import Any, List, Optional, Set, Text
 
 import six
 from six.moves import filter, map
 
-from bqspec.error import ResourcePath, SpecError
+from bqspec.error import SpecError
+from bqspec.rcpath import ResourcePath, resource_index, resource_key, resource_val
 
 
 def schema_error(message, resource_path):  # type: (Text, ResourcePath) -> SpecError
@@ -22,12 +23,17 @@ def missing_error(name, resource_path, parent=None):
         return schema_error("{} is required".format(name), resource_path)
 
 
+def insufficient_error(name, either_or_both, resource_path):  # type: (Text, Set[Text], ResourcePath) -> SpecError
+    keys = ",".join(sorted(list(either_or_both)))
+    return schema_error("{} required to either or both: {}".format(name, keys), resource_path)
+
+
 def type_error(name, type_name, resource_path):  # type: (Text, Text, ResourcePath) -> SpecError
     return schema_error("{} must be {}".format(name, type_name), resource_path)
 
 
 def unknown_property_error(got, resource_path):  # type: (Text, ResourcePath) -> SpecError
-    return schema_error("'{}' is unknown property".format(got), resource_path)
+    return schema_error("'{}' is unknown property".format(got), resource_path + [got, resource_key])
 
 
 def assert_type(obj, t, name, type_name, resource_path):
@@ -37,8 +43,11 @@ def assert_type(obj, t, name, type_name, resource_path):
     return []
 
 
-def validate_schema(obj):  # type: (Any) -> List[SpecError]
-    errors = assert_type(obj, dict, "top level object", "mapping", [])
+def validate_schema(obj, resource_path=None):  # type: (Any, Optional[ResourcePath]) -> List[SpecError]
+    if resource_path is None:
+        resource_path = []
+
+    errors = assert_type(obj, dict, "top level object", "mapping", resource_path + [resource_val])
     if errors:
         return errors
 
@@ -50,71 +59,98 @@ def validate_schema(obj):  # type: (Any) -> List[SpecError]
     known = required | optional | either_or_both
 
     if "query_path" not in raw_spec:
-        errors.append(missing_error("query_path", []))
+        errors.append(missing_error("query_path", resource_path))
     elif not isinstance(raw_spec["query_path"], six.text_type):
-        errors.append(type_error("query_path", "unicode", ["query_path", "$val"]))
+        errors.append(type_error("query_path", "unicode", resource_path + ["query_path", resource_val]))
 
     if "params" in raw_spec:
         params = raw_spec["params"]
         if not isinstance(params, list):
-            errors.append(type_error("params", "sequence", ["params", "$val"]))
+            errors.append(type_error("params", "sequence", resource_path + ["params", resource_val]))
         else:
             for i, param in enumerate(params):
-                errors.extend(validate_param_schema(param, ["params", "#{}".format(i)]))
+                errors.extend(validate_param_schema(param, resource_path + ["params", resource_index(i)]))
 
     if "invariants" in raw_spec:
-        errors.extend(validate_conditions_schema("invariants", raw_spec["invariants"]))
+        errors.extend(validate_conditions_schema("invariants", raw_spec["invariants"], resource_path))
 
     if "cases" in raw_spec:
         cases = raw_spec["cases"]
         if not isinstance(cases, list):
-            errors.append(type_error("cases", "sequence", ["cases", "$val"]))  # TODO: add location
+            errors.append(type_error("cases", "sequence", resource_path + ["cases", resource_val]))
         else:
             for i, case in enumerate(cases):
-                errors.extend(validate_case_schema(case))  # TODO: add location
+                errors.extend(validate_case_schema(case, resource_path + ["cases", resource_index(i)]))
+
+    if not any(key in raw_spec for key in either_or_both):
+        errors.append(insufficient_error("top level object", either_or_both, resource_path))
+
+    for key in raw_spec:
+        if key not in known:
+            errors.append(unknown_property_error(key, resource_path))
 
     return errors
 
 
-def validate_param_schema(raw_param, resource_path):  # type: (Any, ResourcePath) -> List[SpecError]
-    errors = assert_type(raw_param, dict, "param", "mapping", resource_path)
+def validate_param_schema(obj, resource_path):  # type: (Any, ResourcePath) -> List[SpecError]
+    errors = assert_type(obj, dict, "param", "mapping", resource_path)
     if errors:
         return errors
 
-    for field in ["type", "name", "value"]:
-        if field not in raw_param:
-            errors.append(missing_error(field, resource_path, parent="param"))
-        elif not isinstance(raw_param[field], six.text_type):
-            errors.append(type_error(field, "unicode", resource_path + [field, "$val"]))
+    raw_param = obj  # type: dict
+
+    required = {"type", "name", "value"}
+    known = required
+
+    for key in required:
+        if key not in raw_param:
+            errors.append(missing_error(key, resource_path, parent="param"))
+        elif not isinstance(raw_param[key], six.text_type):
+            errors.append(type_error(key, "unicode", resource_path + [key, resource_val]))
+
+    for key in raw_param:
+        if key not in known:
+            errors.append(unknown_property_error(key, resource_path))
 
     return errors
 
 
-def validate_case_schema(raw_case, resource_path):  # type: (Any, ResourcePath) -> List[SpecError]
-    errors = assert_type(raw_case, dict, "case", "mapping", resource_path + ["val"])
+def validate_case_schema(obj, resource_path):  # type: (Any, ResourcePath) -> List[SpecError]
+    errors = assert_type(obj, dict, "case", "mapping", resource_path + [resource_val])
     if errors:
         return errors
 
-    if "when" not in raw_case:
-        errors.append(missing_error("when", parent="case"))
-    else:
-        errors.extend(validate_conditions_schema("when", raw_case["when"]))
+    raw_case = obj  # type: dict
 
-    if "expected" not in raw_case:
-        errors.append(missing_error("expected", parent="case"))
-    else:
-        errors.extend(validate_conditions_schema("expected", raw_case["expected"]))
+    required = {"where", "expected"}
+    known = required
+
+    for key in required:
+        if key not in raw_case:
+            errors.append(missing_error(key, resource_path, parent="case"))
+        else:
+            errors.extend(validate_conditions_schema(key, raw_case[key], resource_path))
+
+    for key in raw_case:
+        if key not in known:
+            errors.append(unknown_property_error(key, resource_path))
 
     return errors
 
 
-def validate_conditions_schema(container, raw_conditions):  # type: (Text, Any) -> List[SpecError]
-    errors = assert_type(raw_conditions, list, container, "sequence")
+def validate_conditions_schema(container, obj, resource_path):
+    # type: (Text, Any, ResourcePath) -> List[SpecError]
+    errors = assert_type(obj, list, container, "sequence", resource_path + [container, resource_val])
     if errors:
         return errors
+
+    raw_conditions = obj  # type: list
 
     element_name = "{}'s element".format(container)
     enumerated = enumerate(raw_conditions)
     filtered = filter(lambda x: not isinstance(x[1], six.text_type), enumerated)
-    mapped = map(lambda x: type_error(element_name, "unicode"), filtered)
+    mapped = map(
+        lambda x: type_error(element_name, "unicode", resource_path + [container, resource_index(x[0]), resource_val]),
+        filtered,
+    )
     return list(mapped)
