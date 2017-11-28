@@ -1,7 +1,5 @@
 # coding: utf-8
-from __future__ import unicode_literals
-
-from typing import Any, Text
+from typing import Any, Optional, Text
 
 
 class Spec(object):
@@ -13,8 +11,5 @@ class Spec(object):
         self.cases = cases
 
 
-def from_dict(d):  # type: (dict) -> Spec
-    query_path = d["query_path"]
-    params = d["params"]
-    invariants = d["invariants"]
-    cases = d[""]
+def from_dict(d):  # type: (dict) -> Optional[Spec]
+    pass

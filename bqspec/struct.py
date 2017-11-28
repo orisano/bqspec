@@ -1,0 +1,33 @@
+# coding: utf-8
+from __future__ import unicode_literals
+
+from typing import List, Optional, Text
+
+
+class RawCase(object):
+    def __init__(self, where="", expected=""):  # type: (Text, Text) -> None
+        self.where = where  # type: Text
+        self.expected = expected  # type: Text
+
+
+class RawParam(object):
+    def __init__(self, type="", name="", value=""):  # type: (Text, Text, Text) -> None
+        self.type = type  # type: Text
+        self.name = name  # type: Text
+        self.value = value  # type: Text
+
+
+class RawSpec(object):
+    def __init__(self, query_path, params=None, invariants=None, cases=None):
+        # type: (Text, Optional[List[dict]], Optional[List[Text]], Optional[List[dict]]) -> None
+        if params is None:
+            params = []
+        if invariants is None:
+            invariants = []
+        if cases is None:
+            cases = []
+
+        self.query_path = query_path  # type: Text
+        self.params = [RawParam(**param) for param in params]  # type: List[RawParam]
+        self.invariants = invariants  # type: List[Text]
+        self.cases = [RawCase(**case) for case in cases]  # type: List[RawCase]
