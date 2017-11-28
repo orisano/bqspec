@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "08bae9f555787cf251f982d008df9cc5a81e98e6e22349cfe5bac216f4ac2aa7"
+            "sha256": "770b6784d34aa7c3f6b16b9e4515c071b2cc6df06022407347871ddfd6574ad7"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -29,6 +29,23 @@
         ]
     },
     "default": {
+        "embexpr": {
+            "hashes": [
+                "sha256:b6e82807e4d6b0f180a5f35789a50a00a2b66cf859fd27e3606e53137c39500d",
+                "sha256:869057387ae53fd95d4944df4e180843ac77173168ffbb410a495edcd0b4a2ed"
+            ],
+            "version": "==0.1.0"
+        },
+        "ruamel.ordereddict": {
+            "hashes": [
+                "sha256:150ce8e6c514a2a2b62753622a75874962561f8e5eeec81a3172ab952807bf0b",
+                "sha256:45541836cbfdde630033cae7bbbe35acbac87a0ceec79f944b7a3bedd940fe78",
+                "sha256:aee2fa23e884249b4284b728888c553d551e5bfd4de2731f10153fd7813ec55f",
+                "sha256:08b4b19fe518d32251a5338e039c4dc9eb0876f2919f94c9b8d2f9446ea80806",
+                "sha256:bf0a198c8ce5d973c24e5dba12d3abc254996788ca6ad8448eabc6aa710db149"
+            ],
+            "version": "==0.4.13"
+        },
         "ruamel.yaml": {
             "hashes": [
                 "sha256:4bdec0b1a4a12e4a35b788ef53e0b2efd1e9f815ca48615b5244ccdbc8f0b56b",

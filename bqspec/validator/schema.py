@@ -1,6 +1,7 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
+import datetime
 import types
 from typing import Any, List, Optional, Set, Text
 
@@ -99,14 +100,21 @@ def validate_param_schema(obj, resource_path):  # type: (Any, ResourcePath) -> L
 
     raw_param = obj  # type: dict
 
-    required = {"type", "name", "value"}
-    known = required
+    required = {"type", "name"}
+    known = required | {"value"}
 
     for key in required:
         if key not in raw_param:
             errors.append(missing_error(key, resource_path, parent="param"))
         elif not isinstance(raw_param[key], six.text_type):
             errors.append(type_error(key, "unicode", resource_path + [key, resource_val]))
+
+    if "value" not in raw_param:
+        errors.append(missing_error("value", resource_path, parent="param"))
+    else:
+        value = raw_param["value"]
+        if not isinstance(value, (six.text_type, int, float, bool, datetime.datetime, datetime.date)):
+            errors.append(type_error("value", "(unicode,int,float,bool,datetime,date)"))
 
     for key in raw_param:
         if key not in known:

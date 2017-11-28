@@ -10,6 +10,7 @@ name = "pypi"
 six = "*"
 "ruamel.yaml" = "*"
 typing = "*"
+embexpr = "*"
 
 
 [dev-packages]

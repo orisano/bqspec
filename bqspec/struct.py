@@ -1,7 +1,8 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
-from typing import List, Optional, Text
+import datetime
+from typing import List, Optional, Text, Union
 
 
 class RawCase(object):
@@ -14,7 +15,7 @@ class RawParam(object):
     def __init__(self, type="", name="", value=""):  # type: (Text, Text, Text) -> None
         self.type = type  # type: Text
         self.name = name  # type: Text
-        self.value = value  # type: Text
+        self.value = value  # type: Union[Text, int, float, bool, datetime.datetime, datetime.date]
 
 
 class RawSpec(object):
