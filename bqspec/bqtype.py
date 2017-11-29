@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 import datetime
-from typing import Dict, Text
 import types
+from typing import Dict, Text
 
 import six
 

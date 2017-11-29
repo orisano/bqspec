@@ -11,6 +11,8 @@ six = "*"
 "ruamel.yaml" = "*"
 typing = "*"
 embexpr = "*"
+google-cloud-bigquery = "*"
+click = "*"
 
 
 [dev-packages]

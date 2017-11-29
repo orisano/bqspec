@@ -6,9 +6,13 @@ from typing import List, Optional, Text, Union
 
 
 class RawCase(object):
-    def __init__(self, where="", expected=""):  # type: (Text, Text) -> None
-        self.where = where  # type: Text
-        self.expected = expected  # type: Text
+    def __init__(self, where=None, expected=None):  # type: (Optional[List[Text]], Optional[List[Text]]) -> None
+        if where is None:
+            where = []
+        if expected is None:
+            expected = []
+        self.where = where  # type: List[Text]
+        self.expected = expected  # type: List[Text]
 
 
 class RawParam(object):
