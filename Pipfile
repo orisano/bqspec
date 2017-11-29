@@ -19,6 +19,8 @@ click = "*"
 
 yapf = "*"
 isort = "*"
+pytest = "*"
+twine = "*"
 
 
 [requires]
