@@ -7,15 +7,19 @@ BQSpec
 Getting Started
 --------
 .. code:: bash
+
     pip install git+https://github.com/orisano/bqspec
 
 .. code:: bash
+
     gcloud auth application-default login
 
 How to Use
 --------
 spec.yaml
+
 .. code:: yaml
+
     # test target SQL filepath
     query_path: ./sample.sql
     # any BigQuery query parameters (optional). more details: https://cloud.google.com/bigquery/docs/parameterized-queries
