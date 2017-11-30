@@ -6,7 +6,7 @@ import os
 import sys
 from shutil import rmtree
 
-from setuptools import find_packages, setup, Command
+from setuptools import Command, find_packages, setup
 
 NAME = 'bqspec'
 DESCRIPTION = 'SQL testing tool for Google BigQuery'
@@ -30,7 +30,7 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 about = {}
 with open(os.path.join(here, NAME, '__version__.py')) as f:
-    exec(f.read(), about)
+    exec (f.read(), about)
 
 
 class UploadCommand(Command):
@@ -74,7 +74,10 @@ setup(
     author=AUTHOR,
     author_email=EMAIL,
     url=URL,
-    packages=find_packages(exclude=('tests',)),
+    packages=find_packages(exclude=('tests', )),
+    entry_points={
+        'console_scripts': ['bqspec=bqspec:cli'],
+    },
     install_requires=REQUIRED,
     include_package_data=True,
     license='MIT',
