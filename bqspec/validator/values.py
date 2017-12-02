@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 import os.path
-from typing import List, Text
+from typing import List, Optional, Text
 
 import embexpr
 
@@ -16,13 +16,23 @@ def value_error(message, resource_path):  # type: (Text, ResourcePath) -> SpecEr
     return SpecError("ValueError", message, resource_path)
 
 
-def validate_values(raw_spec, resource_path=None):  # type: (RawSpec, ResourcePath) -> List[SpecError]
+def validate_file_path(path, resource_path):  # type: (Text, ResourcePath) -> List[SpecError]
+    errors = []
+    if not os.path.exists(path):
+        errors.append(value_error("is not file or directory: {}".format(path), resource_path))
+        return errors
+
+    if not os.path.isdir(path):
+        errors.append(value_error("expected file, but got directory: {}".format(path), resource_path))
+
+    return errors
+
+
+def validate_values(raw_spec, resource_path=None):  # type: (RawSpec, Optional[ResourcePath]) -> List[SpecError]
     if resource_path is None:
         resource_path = []
 
-    errors = []  # type: List[SpecError]
-    if not os.path.isfile(raw_spec.query_path):
-        errors.append(value_error("query_path is not file", resource_path + ["query_path", resource_val]))
+    errors = validate_file_path(raw_spec.query_path, resource_path + ["query_path", resource_val])
 
     for i, param in enumerate(raw_spec.params):
         errors.extend(validate_param_values(param, resource_path + ["params", resource_index(i), resource_val]))
