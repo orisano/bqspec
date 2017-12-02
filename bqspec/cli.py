@@ -7,6 +7,7 @@ import click
 import ruamel.yaml
 
 from bqspec.error import SpecError
+from bqspec.loader import load_yaml
 from bqspec.struct import RawSpec
 from bqspec.validator import validate_schema, validate_values
 
@@ -19,7 +20,7 @@ def report_error(path, errors):  # type: (Text, List[SpecError]) -> None
 
 def run(path):  # type: (Text) -> None
     with click.open_file(path, encoding="utf-8") as f:
-        obj = ruamel.yaml.safe_load(f)
+        obj = load_yaml(f)
 
     errors = validate_schema(obj)
     if errors:
