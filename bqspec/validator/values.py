@@ -22,7 +22,7 @@ def validate_file_path(path, resource_path):  # type: (Text, ResourcePath) -> Li
         errors.append(value_error("is not file or directory: {}".format(path), resource_path))
         return errors
 
-    if not os.path.isdir(path):
+    if not os.path.isfile(path):
         errors.append(value_error("expected file, but got directory: {}".format(path), resource_path))
 
     return errors
