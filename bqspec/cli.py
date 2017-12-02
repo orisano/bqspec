@@ -4,7 +4,6 @@ import os.path
 from typing import List, Text
 
 import click
-import ruamel.yaml
 
 from bqspec.error import SpecError
 from bqspec.loader import load_yaml
