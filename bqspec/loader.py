@@ -1,6 +1,8 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
+from typing import Any, BinaryIO
+
 import ruamel.yaml
 import six
 
@@ -13,5 +15,5 @@ if six.PY2:
     yaml.constructor.add_constructor("tag:yaml.org,2002:str", _construct_yaml_str)
 
 
-def load_yaml(stream):
+def load_yaml(stream):  # type: (BinaryIO) -> Any
     return yaml.load(stream)
