@@ -6,7 +6,7 @@ import embexpr
 import google.cloud.bigquery as bq
 from six.moves import map
 
-from .struct import RawSpec
+from .rstruct import RawSpec
 
 
 class Case(object):

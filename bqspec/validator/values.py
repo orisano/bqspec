@@ -9,7 +9,7 @@ import embexpr
 from bqspec.bqtype import SUPPORT_TYPES
 from bqspec.error import SpecError
 from bqspec.rcpath import ResourcePath, resource_index, resource_val
-from bqspec.struct import RawParam, RawSpec
+from bqspec.rstruct import RawParam, RawSpec
 
 
 def value_error(message, resource_path):  # type: (Text, ResourcePath) -> SpecError
