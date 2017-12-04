@@ -74,7 +74,10 @@ def to_conditions(conditions):  # type: (List[Text]) -> List[embexpr.Expr]
 
 
 def from_dict(d):  # type: (dict) -> Spec
-    raw_spec = RawSpec(**d)
+    return from_struct(RawSpec(**d))
+
+
+def from_struct(raw_spec):  # type: (RawSpec) -> Spec
     query_path = raw_spec.query_path
     params = [
         bq.ScalarQueryParameter(param.name.encode("latin-1"), param.type.encode("latin-1"), param.value)
