@@ -7,7 +7,8 @@ import click
 
 from bqspec.error import SpecError
 from bqspec.loader import load_yaml
-from bqspec.struct import RawSpec
+from bqspec.rstruct import RawSpec
+from bqspec.spec import from_struct
 from bqspec.validator import validate_schema, validate_values
 
 
@@ -32,7 +33,35 @@ def run(path):  # type: (Text) -> None
         report_error(path, errors)
         return
 
-    click.echo("run {}".format(path))
+    spec = from_struct(raw_spec)
+    cases_results, invariants_results = spec.verify()
+    click.echo("Invariants Failed Cases::")
+    for row, messages in invariants_results:
+        click.echo("===========================")
+        click.echo(row)
+        click.echo("[failed]")
+        for message in messages:
+            click.echo("{} #==> False".format(message))
+        click.echo("")
+
+    click.echo("")
+    click.echo("Failed Cases::")
+
+    for i, case in enumerate(spec.cases):
+        results = cases_results[i]
+        if not results:
+            continue
+        click.echo("Case: {}".format(i))
+        for condition in case.where:
+            click.echo("- {}".format(condition.expr))
+
+        for row, messages in results:
+            click.echo("===========================")
+            click.echo(row)
+            click.echo("[failed]")
+            for message in messages:
+                click.echo("{} #==> False".format(message))
+            click.echo("")
 
 
 @click.command()
