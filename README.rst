@@ -8,7 +8,7 @@ Getting Started
 --------
 .. code:: bash
 
-    pip install git+https://github.com/orisano/bqspec
+    pip install bqspec
 
 .. code:: bash
 
@@ -40,6 +40,17 @@ spec.yaml
           - a == 2
           - b == 3
           - c == 5
+
+.. code:: bash
+
+    bqspec -f spec.yaml
+
+or
+
+.. code:: bash
+
+    bqspec -d .
+
 
 License
 --------
