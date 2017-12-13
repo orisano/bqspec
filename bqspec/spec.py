@@ -5,6 +5,7 @@ from typing import List, Optional, Text, Tuple
 import embexpr
 import google.cloud.bigquery as bq
 from six.moves import map
+from tqdm import tqdm
 
 from .rstruct import RawSpec
 
@@ -56,7 +57,7 @@ class Spec(object):
     def verify(self):  # type: () -> Tuple[List[List[Tuple[dict, List[Text]]]], List[Tuple[dict, List[Text]]]]
         cases = [[] for _ in range(len(self.cases))]
         messages = []
-        for row in self.execute_query():
+        for row in tqdm(self.execute_query()):
             failed = [invariant.expr for invariant in self.invariants if not invariant(**row)]
             if failed:
                 messages.append((row, failed))
