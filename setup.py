@@ -21,6 +21,7 @@ REQUIRED = [
     'embexpr',
     'google-cloud-bigquery',
     'click',
+    'tqdm',
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
