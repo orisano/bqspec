@@ -27,6 +27,13 @@ spec.yaml
         - type: DATE
           name: date
           value: 2017-11-30
+    # known columns (optional).
+    columns:
+        - id
+        - a
+        - b
+        - c
+        - total
     # conditions which all rows must met (optional).
     invariants:
         - total >= 0  # write python expression
