@@ -23,10 +23,12 @@ class RawParam(object):
 
 
 class RawSpec(object):
-    def __init__(self, query_path, params=None, invariants=None, cases=None):
-        # type: (Text, Optional[List[dict]], Optional[List[Text]], Optional[List[dict]]) -> None
+    def __init__(self, query_path, params=None, columns=None, invariants=None, cases=None):
+        # type: (Text, Optional[List[dict]], Optional[List[Text]], Optional[List[Text]], Optional[List[dict]]) -> None
         if params is None:
             params = []
+        if columns is None:
+            columns = []
         if invariants is None:
             invariants = []
         if cases is None:
@@ -34,5 +36,6 @@ class RawSpec(object):
 
         self.query_path = query_path  # type: Text
         self.params = [RawParam(**param) for param in params]  # type: List[RawParam]
+        self.columns = columns  # type: List[Text]
         self.invariants = invariants  # type: List[Text]
         self.cases = [RawCase(**case) for case in cases]  # type: List[RawCase]

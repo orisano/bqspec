@@ -55,7 +55,7 @@ def validate_schema(obj, resource_path=None):  # type: (Any, Optional[ResourcePa
     raw_spec = obj  # type: dict
 
     required = {"query_path"}
-    optional = {"params"}
+    optional = {"params", "columns"}
     either_or_both = {"cases", "invariants"}
     known = required | optional | either_or_both
 
@@ -71,6 +71,17 @@ def validate_schema(obj, resource_path=None):  # type: (Any, Optional[ResourcePa
         else:
             for i, param in enumerate(params):
                 errors.extend(validate_param_schema(param, resource_path + ["params", resource_index(i)]))
+
+    if "columns" in raw_spec:
+        columns = raw_spec["columns"]
+        if not isinstance(columns, list):
+            errors.append(type_error("columns", "sequence", resource_path + ["columns", resource_val]))
+        else:
+            for i, column in columns:
+                if not isinstance(column, six.text_type):
+                    errors.append(
+                        type_error("columns's element", "unicode",
+                                   resource_path + ["columns", resource_index(i), resource_val]))
 
     if "invariants" in raw_spec:
         errors.extend(validate_conditions_schema("invariants", raw_spec["invariants"], resource_path))
@@ -114,7 +125,8 @@ def validate_param_schema(obj, resource_path):  # type: (Any, ResourcePath) -> L
     else:
         value = raw_param["value"]
         if not isinstance(value, (six.text_type, int, float, bool, datetime.datetime, datetime.date)):
-            errors.append(type_error("value", "(unicode,int,float,bool,datetime,date)"))
+            errors.append(
+                type_error("value", "(unicode,int,float,bool,datetime,date)", resource_path + ["value", resource_val]))
 
     for key in raw_param:
         if key not in known:

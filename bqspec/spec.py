@@ -21,11 +21,14 @@ class Spec(object):
             self,
             query_path,  # type: Text
             params=None,  # type: Optional[List[bq.ScalarQueryParameter]]
+            columns=None,  # type: Optional[List[Text]]
             invariants=None,  # type: Optional[List[embexpr.Expr]]
             cases=None  # type: Optional[List[Case]]
     ):  # (...) -> None
         if params is None:
             params = []
+        if columns is None:
+            columns = []
         if invariants is None:
             invariants = []
         if cases is None:
@@ -33,6 +36,7 @@ class Spec(object):
 
         self.query_path = query_path  # type: Text
         self.params = params  # type: List[bq.ScalarQueryParameter]
+        self.columns = columns  # type: List[Text]
         self.invariants = invariants  # type: List[embexpr.Expr]
         self.cases = cases  # type: List[Case]
 
@@ -57,7 +61,14 @@ class Spec(object):
     def verify(self):  # type: () -> Tuple[List[List[Tuple[dict, List[Text]]]], List[Tuple[dict, List[Text]]]]
         cases = [[] for _ in range(len(self.cases))]
         messages = []
+        first = True
         for row in tqdm(self.execute_query()):
+            if first:
+                first = False
+                unknown_columns = (key for key in row.keys() if key not in self.columns)
+                for unknown_column in unknown_columns:
+                    messages.append((row, '"{}" is unknown column'.format(unknown_column)))
+
             failed = [invariant.expr for invariant in self.invariants if not invariant(**row)]
             if failed:
                 messages.append((row, failed))
@@ -87,4 +98,4 @@ def from_struct(raw_spec):  # type: (RawSpec) -> Spec
     invariants = to_conditions(raw_spec.invariants)
     cases = [Case(to_conditions(case.where), to_conditions(case.expected)) for case in raw_spec.cases]
 
-    return Spec(query_path, params, invariants, cases)
+    return Spec(query_path, params, raw_spec.columns, invariants, cases)
