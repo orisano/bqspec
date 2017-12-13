@@ -13,6 +13,7 @@ typing = "*"
 embexpr = "*"
 google-cloud-bigquery = "*"
 click = "*"
+tqdm = "*"
 
 
 [dev-packages]
