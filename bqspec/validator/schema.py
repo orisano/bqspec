@@ -77,7 +77,7 @@ def validate_schema(obj, resource_path=None):  # type: (Any, Optional[ResourcePa
         if not isinstance(columns, list):
             errors.append(type_error("columns", "sequence", resource_path + ["columns", resource_val]))
         else:
-            for i, column in columns:
+            for i, column in enumerate(columns):
                 if not isinstance(column, six.text_type):
                     errors.append(
                         type_error("columns's element", "unicode",

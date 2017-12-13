@@ -65,9 +65,10 @@ class Spec(object):
         for row in tqdm(self.execute_query()):
             if first:
                 first = False
-                unknown_columns = (key for key in row.keys() if key not in self.columns)
-                for unknown_column in unknown_columns:
-                    messages.append((row, '"{}" is unknown column'.format(unknown_column)))
+                unknown_columns = [key for key in row.keys() if key not in self.columns]
+                if unknown_columns:
+                    messages.append(
+                        (row, ['"{}" is unknown column'.format(unknown_column) for unknown_column in unknown_columns]))
 
             failed = [invariant.expr for invariant in self.invariants if not invariant(**row)]
             if failed:
