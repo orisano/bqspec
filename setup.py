@@ -19,7 +19,7 @@ REQUIRED = [
     'typing',
     'ruamel.yaml',
     'embexpr',
-    'google-cloud-bigquery',
+    'google-cloud-bigquery >= 0.28.0',
     'click',
     'tqdm',
 ]
