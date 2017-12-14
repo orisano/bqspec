@@ -63,7 +63,7 @@ class Spec(object):
         messages = []
         first = True
         for row in tqdm(self.execute_query()):
-            if first:
+            if first and self.columns:
                 first = False
                 unknown_columns = [key for key in row.keys() if key not in self.columns]
                 if unknown_columns:
