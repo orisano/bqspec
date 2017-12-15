@@ -51,7 +51,7 @@ class Spec(object):
         query_job.run()
 
         def convert_dict(row):
-            return {field.name: row[i] for i, field in enumerate(row, query_job.schema)}
+            return {field.name: row[i] for i, field in enumerate(query_job.schema)}
 
         return map(convert_dict, query_job.rows)
 
