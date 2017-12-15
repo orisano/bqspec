@@ -45,18 +45,15 @@ class Spec(object):
             query = f.read()
         client = bq.Client()
 
-        job_config = bq.QueryJobConfig()
-        job_config.query_parameters = self.params
-        query_job = client.query(query, job_config=job_config)
-
-        query_job.result()
-        destination_table_ref = query_job.destination
-        table = client.get_table(destination_table_ref)
+        query_job = client.run_sync_query(query)
+        query_job.use_legacy_sql = False
+        query_job.query_parameters = self.params
+        query_job.run()
 
         def convert_dict(row):
-            return {field.name: row[field.name] for field in table.schema}
+            return {field.name: row[i] for i, field in enumerate(row, query_job.schema)}
 
-        return map(convert_dict, client.list_rows(table))
+        return map(convert_dict, query_job.rows)
 
     def verify(self):  # type: () -> Tuple[List[List[Tuple[dict, List[Text]]]], List[Tuple[dict, List[Text]]]]
         cases = [[] for _ in range(len(self.cases))]
