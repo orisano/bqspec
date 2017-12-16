@@ -2,7 +2,6 @@ BQSpec
 ===================================
 | SQL testing tool for Google BigQuery.
 | this library is pre-alpha. not recommended to production use.
-| (under construction now)
 
 Getting Started
 --------
