@@ -2,7 +2,6 @@
 import os
 import os.path
 import sys
-from typing import List, Text, Tuple
 
 import click
 
@@ -11,6 +10,9 @@ from bqspec.loader import load_yaml
 from bqspec.rstruct import RawSpec
 from bqspec.spec import from_struct
 from bqspec.validator import validate_schema, validate_values
+
+if False:
+    from typing import List, Text, Tuple
 
 
 def report_error(path, errors):  # type: (Text, List[SpecError]) -> None

@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 import os.path
-from typing import List, Optional, Text
 
 import embexpr
 
@@ -10,6 +9,9 @@ from bqspec.bqtype import SUPPORT_TYPES
 from bqspec.error import SpecError
 from bqspec.rcpath import ResourcePath, resource_index, resource_val
 from bqspec.rstruct import RawParam, RawSpec
+
+if False:
+    from typing import List, Optional, Text
 
 
 def value_error(message, resource_path):  # type: (Text, ResourcePath) -> SpecError

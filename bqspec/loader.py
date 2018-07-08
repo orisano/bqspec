@@ -1,10 +1,11 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
-from typing import Any, BinaryIO
-
 import ruamel.yaml
 import six
+
+if False:
+    from typing import Any, BinaryIO
 
 yaml = ruamel.yaml.YAML(typ="safe")
 if six.PY2:

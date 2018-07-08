@@ -3,13 +3,15 @@ from __future__ import unicode_literals
 
 import datetime
 import types
-from typing import Any, List, Optional, Set, Text
 
 import six
 from six.moves import filter, map
 
 from bqspec.error import SpecError
 from bqspec.rcpath import ResourcePath, resource_index, resource_key, resource_val
+
+if False:
+    from typing import Any, List, Optional, Set, Text
 
 
 def schema_error(message, resource_path):  # type: (Text, ResourcePath) -> SpecError

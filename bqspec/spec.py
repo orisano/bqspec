@@ -1,6 +1,5 @@
 # coding: utf-8
 import codecs
-from typing import List, Optional, Text, Tuple
 
 import embexpr
 import google.cloud.bigquery as bq
@@ -8,6 +7,9 @@ from six.moves import map
 from tqdm import tqdm
 
 from .rstruct import RawSpec
+
+if False:
+    from typing import List, Optional, Text, Tuple
 
 
 class Case(object):
@@ -45,7 +47,7 @@ class Spec(object):
             query = f.read()
         client = bq.Client()
 
-        query_job = client.run_sync_query(query)
+        query_job = client.query(query)
         query_job.use_legacy_sql = False
         query_job.query_parameters = self.params
         query_job.run()

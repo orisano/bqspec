@@ -1,29 +1,21 @@
 [[source]]
-
-url = "https://pypi.python.org/simple"
+url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 six = "*"
 "ruamel.yaml" = "*"
-typing = "*"
 embexpr = "*"
-google-cloud-bigquery = "0.25.0"
+google-cloud-bigquery = "*"
 click = "*"
 tqdm = "*"
 
-
 [dev-packages]
-
 yapf = "*"
 isort = "*"
 pytest = "*"
 twine = "*"
 
-
 [requires]
-
-python_version = "2.7"
+python_version = "3.7"
