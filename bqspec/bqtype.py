@@ -3,12 +3,9 @@ from __future__ import unicode_literals
 
 import datetime
 import types
+from typing import Dict, Text
 
 import six
-
-if False:
-    from typing import Dict, Text
-
 
 SUPPORT_TYPES = {  # type: Dict[Text, types.TypeType]
     "STRING": six.text_type,

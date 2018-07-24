@@ -1,5 +1,6 @@
 # coding: utf-8
 import codecs
+from typing import List, Optional, Text, Tuple
 
 import embexpr
 import google.cloud.bigquery as bq
@@ -7,9 +8,6 @@ from six.moves import map
 from tqdm import tqdm
 
 from .rstruct import RawSpec
-
-if False:
-    from typing import List, Optional, Text, Tuple
 
 
 class Case(object):

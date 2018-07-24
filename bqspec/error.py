@@ -1,10 +1,9 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
-from .rcpath import ResourcePath
+from typing import Optional, Text
 
-if False:
-    from typing import Optional, Text
+from .rcpath import ResourcePath
 
 
 class SpecError(object):

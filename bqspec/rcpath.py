@@ -1,8 +1,7 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
-if False:
-    from typing import List, Text
+from typing import List, Text
 
 ResourcePath = List[Text]
 

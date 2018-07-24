@@ -2,9 +2,7 @@
 from __future__ import unicode_literals
 
 import datetime
-
-if False:
-    from typing import List, Optional, Text, Union
+from typing import List, Optional, Text, Union
 
 
 class RawCase(object):

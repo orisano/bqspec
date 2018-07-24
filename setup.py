@@ -16,7 +16,6 @@ AUTHOR = 'Nao YONASHIRO'
 
 REQUIRED = [
     'six',
-    'typing',
     'ruamel.yaml',
     'embexpr',
     'google-cloud-bigquery == 0.25.0',
