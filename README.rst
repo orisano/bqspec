@@ -58,6 +58,10 @@ or
     bqspec -d .
 
 
+Author
+--------
+@orisano (Nao YONASHIRO)
+
 License
 --------
 MIT
