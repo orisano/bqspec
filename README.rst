@@ -4,7 +4,7 @@ BQSpec
 | this library is pre-alpha. not recommended to production use.
 
 Getting Started
---------
+----------------
 .. code:: bash
 
     pip install bqspec
@@ -14,7 +14,7 @@ Getting Started
     gcloud auth application-default login
 
 How to Use
---------
+-----------
 spec.yaml
 
 .. code:: yaml
@@ -59,9 +59,9 @@ or
 
 
 Author
---------
+-----------
 @orisano (Nao YONASHIRO)
 
 License
---------
+-----------
 MIT
