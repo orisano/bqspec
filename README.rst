@@ -1,7 +1,12 @@
 BQSpec
 ===================================
-| SQL testing tool for Google BigQuery.
-| this library is pre-alpha. not recommended to production use.
+.. image:: https://badge.fury.io/py/bqspec.svg
+    :target: https://badge.fury.io/py/bqspec
+.. image:: https://img.shields.io/pypi/pyversions/bqspec.svg
+    :target: https://pypi.org/project/bqspec/
+
+SQL testing tool for Google BigQuery.
+this library is pre-alpha. not recommended to production use.
 
 Getting Started
 ----------------
