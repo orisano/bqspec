@@ -65,7 +65,7 @@ or
 
 Author
 -----------
-@orisano (Nao YONASHIRO)
+Nao Yonashiro (@orisano)
 
 License
 -----------
