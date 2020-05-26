@@ -12,7 +12,7 @@ NAME = 'bqspec'
 DESCRIPTION = 'SQL testing tool for Google BigQuery'
 URL = 'https://github.com/orisano/bqspec'
 EMAIL = 'owan.orisano@gmail.com'
-AUTHOR = 'Nao YONASHIRO'
+AUTHOR = 'Nao Yonashiro'
 
 REQUIRED = [
     'six',
